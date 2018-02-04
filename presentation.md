@@ -2,33 +2,30 @@ class: center, middle
 
 ![React](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/320px-React-icon.svg.png)
 # Addition React Workshop
-
+``` bash
+git clone https://github.com/fBosch/react-workshop.git
+```
 ---
 
 # Agenda
 
-1. Introduction
-2. Subjects
-  * React Api
-3. Open Discussion
+1. Rendering API
 
 ---
 
-# Introduction
+# Rendering API
+
+Wit React you build the DOM using JavaScript objects (Virtual DOM) instead of the alternative that most developers are familiar with — templating.
+
+By using the VDOM; React can find the difference of DOM trees (on application state change) before rendering and only re-render the changed nodes, similar to the way merging with GIT works.
+
+This allows React to render components much faster than most other competing frameworks
 
 ---
 
+# Example: [ReactDOM](/subjects/00-rendering-api/)
 
-# React API
-
-The react API is designed similarly to the native APIs made for DOM manipulation that already exists on the modern web platforms.
-
-Wit React you build the DOM using JavaScript instead of the alternative that most developers are familiar with — templating.
-
-This allows React to render components much faster than most other competing frameworks — by using the virtual DOM diffing before rendering (similar to the way mergin with GIT works).
----
-
-# [Example](/subjects/00-react-api/)
+The ReactDOM API is designed similarly to the native APIs made for DOM manipulation that already exist on the modern web platforms.
 
 ```js
 // Vanilla
