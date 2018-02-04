@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>React API</title>
+
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+  <!-- <script type="text/javascript">
+        // Vanilla
+        const rootElement = document.getElementById("root")
+
+        const element = document.createElement("div") // tagName
+        element.className = "component" // properties
+        element.appendChild(document.createTextNode("Hello!")) // children
+
+        rootElement.appendChild(element) // render
+  </script> -->
+  <script type="text/javascript">
+        // React
+        const rootElement = document.getElementById("root")
+
+        const element = React.createElement("div", { className: "component" }, "Hello!")
+                                      //   tagName        properties           children
+        ReactDOM.render(element, rootElement) // render
+  </script>
+</body>
+</html>

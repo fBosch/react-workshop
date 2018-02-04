@@ -1,0 +1,14 @@
+{
+  "name": "react-workshop",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server ./"
+  },
+  "repository": "https://github.com/fBosch/react-workshop.git",
+  "author": "fBosch <frede.bosch@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "http-server": "^0.11.1"
+  }
+}
