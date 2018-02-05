@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Rendering API</title>
+  <title>JSX</title>
   <style>
     .component {
       font-size: 80px;
@@ -16,9 +16,10 @@
   <div id="root"></div>
   <script src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
-  <script type="text/javascript">
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
         const rootElement = document.getElementById("root")
-        const element = React.createElement("div", { className: "component" }, "Hello!")
+        const element = <div className="component">Hello!</div>
         ReactDOM.render(element, rootElement)
   </script>
 </body>

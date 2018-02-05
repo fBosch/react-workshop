@@ -17,15 +17,16 @@
         text-decoration: none;
       }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-      .remark-slide-scaler { box-shadow: none !important; }
+      .remark-slide-scaler { box-shadow: none !important; height: 735px !important; }
       .remark-container { background: transparent; }
+      .remark-slide img { max-width: 100%;}
     </style>
   </head>
   <body>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script>
     <script>
-      var slideshow = remark.create({  sourceUrl: 'presentation.md', highlightStyle: "vs" });
+      var slideshow = remark.create({  sourceUrl: 'presentation.md', highlightStyle: "tomorrow", highlightSpans: true, highlightLines: true });
     </script>
   </body>
 </html>
