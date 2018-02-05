@@ -1,7 +1,7 @@
-class: center, middle
+class: center, middle, dark-background
+background-image: url(https://alisd.io/assets/lazy_react_background.png)
 
-![React](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/320px-React-icon.svg.png)
-# Addition React Workshop
+# React Workshop
 ``` bash
 git clone https://github.com/fBosch/react-workshop.git
 ```
@@ -10,6 +10,8 @@ git clone https://github.com/fBosch/react-workshop.git
 # Agenda
 
 1. Rendering API
+2. JSX
+3. Components
 
 ---
 
@@ -25,16 +27,16 @@ This allows React to render components much faster than most other competing fra
 
 ---
 
-# Example: [ReactDOM](/subjects/00-rendering-api/)
+# [ReactDOM](/subjects/00-react-dom/)
 
-The `ReactDOM` API is designed similarly to the native APIs made for DOM manipulation that already exist on the modern web platforms.
+The React API is worded similarly to the native APIs made for DOM manipulation that already exist on the modern web platforms.
 
 ```js
-// Vanilla
+// 🍦Vanilla
 const rootElement = document.getElementById("root")
 
 const element = document.createElement("div") // tagName
-element.className = "component" // properties
+element.className = "container" // properties
 element.appendChild(document.createTextNode("Hello!")) // children
 
 rootElement.appendChild(element) // render
@@ -42,10 +44,10 @@ rootElement.appendChild(element) // render
 
 ___
 ```js
-// React
+// ⚛️React
 const rootElement = document.getElementById("root")
 
-const element = React.createElement("div", { className: "component" }, "Hello!")
+const element = React.createElement("div", { className: "container" }, "Hello!")
                               //   tagName        properties           children
 
 ReactDOM.render(element, rootElement) // render
@@ -54,13 +56,13 @@ ReactDOM.render(element, rootElement) // render
 
 # JSX
 
-It is possible to write a React application only by using the `React.createElement` API, but it can be hard on the eyes — so Facebook inventend an abstraction called JSX — which allows us to work with elements in a manner we're more used to: HTML.
+It is possible to write a React application only by using the `React.createElement` API, but it can be hard to maintain — so Facebook invented an abstraction layer called JSX, which allows us to work with elements in a manner that we're more accustomed to: HTML.
 
-It is not completely like HTML, it still relies on the same structures as the raw API — differences like the `className` property.
+It is not completely like HTML, it still relies on the same data structures as the raw API — for example; differences like the `className` property instead of using `class`.
 
-It needs to be transpiled using a process like Babel that will the JSX elements into `React.createElement` functions.
+JSX needs to be transpiled to regular JavaScript using a transpiler, like Babel, that will turn the JSX element declarations into `React.createElement` function calls.
 
-Summarized — JSX is highly recommended syntactic sugar.
+Summarized — JSX is **highly** recommended syntactic sugar when building a React application
 
 ---
 class: center
@@ -69,22 +71,88 @@ class: center
 ![Babel](https://www.adrianprieto.com/wp-content/uploads/2017/01/react-p.png)
 
 ---
-# Example: [JSX](/subjects/01-jsx/)
+# [JSX Transpilation](/subjects/01-jsx/)
 
-```js
-// Raw
-const rootElement = document.getElementById("root")
+Here you can see the abstraction in action — which, arguably, results in much more readable code.
 
-const element = React.createElement("div", { className: "component" }, "Hello!")
+```jsx
+// JSX
+const element = <div className="container">Hello!</div>
 
-ReactDOM.render(element, rootElement)
 ```
 ___
+
 ```js
-// JSX
-const rootElement = document.getElementById("root")
+// Transpiled 🔀
+const element = React.createElement("div", { className: "container" }, "Hello!")
 
-const element = <div className="component">Hello!</div>
+```
+---
+# Components
 
-ReactDOM.render(element, rootElement)
+In React, components are simply functions that return a react element (JSX). Components must be pure — which means that they must not modify the `props` that they are passed or rely on external state that is not passed through `props`.
+
+There is two ways to write a React component:
+
+🤖 Dumb Components
+
+  — are simple functions that take input (`props`) and returns JSX. They are stateless, primarily presentational and are often used as small UI parts that are composed together in smart components.
+___
+🧠 Smart Components
+
+  — are, typically, class based functions that contain application state and can trigger re-render upon state change. These are commonly where you would make fetch requests and other logic that is not view specific.
+
+---
+
+# [🤖 Dumb Component](/subjects/02-components/dumb.html)
+
+```jsx
+// Dumb component utilized with interpolation (curly braces within JSX)
+const greeting = props => <div className="container">{props.content}</div>
+const element = (
+  <div className="app">
+    {greeting({ content: "Hello from component"})}
+  </div>
+)
+```
+___
+
+```jsx
+// Better way — using JSX by following recommended conventions
+const Greeting = props => <div className="container">{props.content}</div>
+const element = (
+  <div className="app">
+    <Greeting content="Hello from component" />
+  </div>
+)
+```
+Using CamelCased naming for your component functions allows the JSX transpiler to know that it is referencing a variable  — otherwise it will try to interpretate it as a `tagName` string.
+
+---
+
+# [🧠 Smart Component](/subjects/02-components/smart.html)
+
+Smart components are typically based on the the react Component class, which implements a number of useful lifecycle hooks and methods.
+
+The render method is run every time a passed `prop` or internal `state` is changed.
+
+A re-render will not be triggered upon mutation — React does not use two-way databinding.
+
+```jsx
+class Counter extends React.Component {
+  state = { count: 0 }
+  // methods that alter state without mutation — triggering a component re-render
+  increment = () => this.setState({ count: this.state.count + 1 })
+  decrement = () => this.setState({ count: this.state.count - 1 })
+
+  render() {
+    return (
+      <div className="counter">
+        {this.state.count}
+        <button onClick={this.increment}>+</button>
+        <button onClick={this.decrement}>-</button>
+      </div>
+    )
+  }
+}
 ```
