@@ -19,18 +19,19 @@
         text-decoration: none;
       }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-      .remark-slide-scaler { box-shadow: none !important; height: 750px !important; }
+      .remark-slide-scaler { box-shadow: none !important; height: 750px !important; transform: scale(1.3) translate(-50%, -50%) !important; top: 50% !important; left: 50% !important;}
       .remark-container { background: transparent; }
       .remark-slide img { max-width: 100%;}
       .remark-code-line { min-height: 1.3em; }
       .dark-background { color: #fff; text-shadow: 0px 1px 2px rgba(0,0,0,0.5); background-size: cover; };
+      .remark-slide-content { zoom: 0.6 !important; }
     </style>
   </head>
   <body>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script>
     <script>
-      remark.create({  sourceUrl: 'presentation.md', highlightStyle: "tomorrow-night-eighties", highlightSpans: true, highlightLines: true });
+      remark.create({  sourceUrl: 'presentation.md', highlightStyle: "monokai", highlightSpans: true, highlightLines: true });
     </script>
   </body>
 </html>

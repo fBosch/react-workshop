@@ -56,7 +56,7 @@ ReactDOM.render(element, rootElement) // render
 
 # JSX
 
-It is possible to write a React application only by using the `React.createElement` API, but it can be hard to maintain — so Facebook invented an abstraction layer called JSX, which allows us to work with elements in a manner that we're more accustomed to: HTML.
+It is possible to write a React application only by using the `React.createElement` API, but it can be hard to maintain — so Facebook has invented an abstraction layer called JSX, which allows us to work with elements in a manner that we're more accustomed to: HTML.
 
 It is not completely like HTML, it still relies on the same data structures as the raw API — for example; differences like the `className` property instead of using `class`.
 
@@ -90,17 +90,22 @@ const element = React.createElement("div", { className: "container" }, "Hello!")
 ---
 # Components
 
-In React, components are simply functions that return a react element (JSX). Components must be pure — which means that they must not modify the `props` that they are passed or rely on external state that is not passed through `props`.
+In React, components are simply functions that take `props` and returns a react element (JSX).
+
+"React elements are immutable. Once you create an element, you can’t change its children or attributes. An element is like a single frame in a movie: it represents the UI at a certain point in time."
+
+With React all you need to know is how to make and compose components, there are no other concepts in terms of functionality (like other frameworks with directives etc.)
 
 There is two ways to write a React component:
+___
 
 🤖 Dumb Components
 
-  — are simple functions that take input (`props`) and returns JSX. They are stateless, primarily presentational and are often used as small UI parts that are composed together in smart components.
+— are simple functions that take input (`props`) and returns JSX. They are stateless, primarily presentational and are often used as small UI parts that are composed together in smart components.
 ___
 🧠 Smart Components
 
-  — are, typically, class based functions that contain application state and can trigger re-render upon state change. These are commonly where you would make fetch requests and other logic that is not view specific.
+— are, typically, class based functions that contain application state and can trigger re-render upon state change. These are commonly where you would make fetch requests and other logic that is not view specific.
 
 ---
 
@@ -155,4 +160,50 @@ class Counter extends React.Component {
     )
   }
 }
+```
+---
+# [🚦 Asynchronicity](/subjects/02-components/async.html)
+
+It is recommended to use the component lifecycle hook `componentWillMount` for handling asynchronous logic.
+
+This allows React to potentially fetch the data before it tries to render the component — minimizing the amount of times the component is re-rendered.
+
+```jsx
+class Book extends React.Component {
+  state = { data: null }
+
+  // will be called before first render
+  componentWillMount() {
+    const { isbn } = this.props
+    fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn)
+      .then(response => response.json())
+      .then(data => this.setState({ data }))
+  }
+
+  render() {
+    if (!this.state.data) return null // handling when data is not loaded
+    const book = this.state.data.items[0]
+    return <img className="book" src={book.volumeInfo.imageLinks.thumbnail} />
+  }
+}
+```
+---
+# [Repeaters?](/subjects/02-components/lists.html)
+
+Since everything in react is basically an object tree (VDOM), the way to do repition, like a list view, is just to use JavaScript's built-in array methods like `map` and `reduce` and return React Elements per iteration.
+
+One important thing to note is that it is recommended to attach a key property to each repeated instance. This helps React's diff calculation know what has changed between render calls — optimizing performance.
+
+```jsx
+const rootElement = document.getElementById("root")
+const items = ["🙈", "🙉", "🙊"]
+
+// returns a list item for each passed item on the props.items property
+const List = props => (
+  <ul>
+    {props.items.map((item, index) => <li key={index}>{item}</li>)}
+  </ul>
+)
+
+ReactDOM.render(<List items={items}/>, rootElement)
 ```
