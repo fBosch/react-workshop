@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Smart Component</title>
+  <style>
+    .form {
+      zoom: 2.5;
+    }
+
+    label, button {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+      class Form extends React.Component {
+        state = { firstName: "", lastName: "", fullName: null }
+
+        onInputChange = e => this.setState({ [e.target.name]: e.target.value })
+        onSubmit = e => {
+          e.preventDefault()
+          this.setState({ fullName: this.state.firstName + " " + this.state.lastName})
+        }
+
+        render() {
+          return (
+            <form className="form" onSubmit={this.onSubmit}>
+              <label>First Name</label>
+              <input type="text" name="firstName" onChange={this.onInputChange} />
+              <label>Last Name</label>
+              <input type="text" name="lastName" onChange={this.onInputChange} />
+              <button>Submit</button>
+              <hr/>
+              Full name: {this.state.fullName ? this.state.fullName : null}
+            </form>
+          )
+        }
+      }
+
+      ReactDOM.render(<Form />, document.getElementById("root"))
+  </script>
+</body>
+</html>

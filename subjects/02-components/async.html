@@ -30,7 +30,7 @@
         }
 
         render() {
-          if (!this.state.data) return null // handling when data is not loaded
+          if (!this.state.data) return "Loading..." // handling when data is not loaded
           const book = this.state.data.items[0]
           return <img className="book" src={book.volumeInfo.imageLinks.thumbnail} />
         }

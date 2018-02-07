@@ -12,6 +12,11 @@ git clone https://github.com/fBosch/react-workshop.git
 1. Rendering API
 2. JSX
 3. Components
+  * Dumb Components
+  * Smart Components
+  * Asynchronicity
+  * Repetition
+  * Event Handling
 
 ---
 
@@ -173,7 +178,7 @@ class Book extends React.Component {
   }
 
   render() {
-    if (!this.state.data) return null // handling when data is not loaded
+    if (!this.state.data) return "Loading..." // handling when data is not loaded
     const book = this.state.data.items[0]
     return <img className="book" src={book.volumeInfo.imageLinks.thumbnail} />
   }
@@ -182,11 +187,11 @@ class Book extends React.Component {
 ReactDOM.render(<Book isbn="0345816021" />, document.getElementById("root"))
 ```
 ---
-# [Repeaters?](/subjects/02-components/lists.html)
+# [Repetition](/subjects/02-components/lists.html)
 
-The way to do repition, like a list view, is just to use JavaScript's built-in array methods like `map` and `reduce` and return a React Element per iteration — generating a new array to be used as `children`.
+The way to do repetition, like a list view, is just to use JavaScript's built-in array methods like `map` and `reduce` and return a React Element per iteration — generating a new array to be used as `children`.
 
-One important thing to note is that it is recommended to attach a key property to each repeated instance containing a unique value (preferrably an ID). This helps React's diff calculation know what has changed between render calls — optimizing performance.
+One important thing to note; is that it is recommended to attach a key property to each repeated instance containing a unique value (preferrably an ID). This helps React's diff calculation know what has changed between render calls — optimizing performance.
 
 ```jsx
 const items = ["🙈", "🙉", "🙊"]
@@ -197,5 +202,35 @@ const List = props => (
   </ul>
 )
 
-ReactDOM.render(<List items={items}/>, document.getElementById("root"))
+ReactDOM.render(<List items={items} />, document.getElementById("root"))
+```
+
+---
+
+# [Event Handling](/subjects/02-components/events.html)
+
+```jsx
+class Form extends React.Component {
+  state = { firstName: "", lastName: "", fullName: null }
+
+  onInputChange = e => this.setState({ [e.target.name]: e.target.value })
+  onSubmit = e => {
+    e.preventDefault()
+    this.setState({ fullName: this.state.firstName + " " + this.state.lastName})
+  }
+
+  render() {
+    return (
+      <form className="form" onSubmit={this.onSubmit}>
+        <label>First Name</label>
+        <input type="text" name="firstName" onChange={this.onInputChange} />
+        <label>Last Name</label>
+        <input type="text" name="lastName" onChange={this.onInputChange} />
+        <button>Submit</button>
+        <hr/>
+        Full name: {this.state.fullName ? this.state.fullName : null}
+      </form>
+    )
+  }
+}
 ```
