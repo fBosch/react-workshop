@@ -33,24 +33,20 @@ The React API is worded similarly to the native APIs made for DOM manipulation t
 
 ```js
 // 🍦Vanilla
-const rootElement = document.getElementById("root")
-
 const element = document.createElement("div") // tagName
 element.className = "container" // properties
 element.appendChild(document.createTextNode("Hello!")) // children
 
-rootElement.appendChild(element) // render
+document.getElementById("root").appendChild(element) // render
 ```
 
 ___
 ```js
 // ⚛️React
-const rootElement = document.getElementById("root")
-
 const element = React.createElement("div", { className: "container" }, "Hello!")
                               //   tagName        properties           children
 
-ReactDOM.render(element, rootElement) // render
+ReactDOM.render(element, document.getElementById("root")) // render
 ```
 ---
 
@@ -83,7 +79,7 @@ const element = <div className="container">Hello!</div>
 ___
 
 ```js
-// Transpiled 🔀
+// 🔀Transpiled
 const element = React.createElement("div", { className: "container" }, "Hello!")
 
 ```
@@ -92,7 +88,7 @@ const element = React.createElement("div", { className: "container" }, "Hello!")
 
 In React, components are simply functions that take `props` and returns a react element (JSX).
 
-"React elements are immutable. Once you create an element, you can’t change its children or attributes. An element is like a single frame in a movie: it represents the UI at a certain point in time."
+"React elements are immutable. Once you create an element, you can’t change its children or attributes. An element is like a single frame in a movie: it represents the UI at a certain point in time." (no two-way databinding)
 
 With React all you need to know is how to make and compose components, there are no other concepts in terms of functionality (like other frameworks with directives etc.)
 
@@ -112,24 +108,20 @@ ___
 # [🤖 Dumb Component](/subjects/02-components/dumb.html)
 
 ```jsx
-// Dumb component utilized with interpolation (curly braces within JSX)
+// Dumb component utilized as function
 const greeting = props => <div className="container">{props.content}</div>
-const element = (
-  <div className="app">
-    {greeting({ content: "Hello from component"})}
-  </div>
-)
+const element = greeting({ content: "Hello from component"})
+
+ReactDOM.render(element, document.getElementById("root"))
 ```
 ___
 
 ```jsx
 // Better way — using JSX by following recommended conventions
 const Greeting = props => <div className="container">{props.content}</div>
-const element = (
-  <div className="app">
-    <Greeting content="Hello from component" />
-  </div>
-)
+const element = <Greeting content="Hello from component" />
+
+ReactDOM.render(element, document.getElementById("root"))
 ```
 Using CamelCased naming for your component functions allows the JSX transpiler to know that it is referencing a variable  — otherwise it will try to interpretate it as a `tagName` string.
 
@@ -137,20 +129,19 @@ Using CamelCased naming for your component functions allows the JSX transpiler t
 
 # [🧠 Smart Component](/subjects/02-components/smart.html)
 
-Smart components are typically based on the the react Component class, which implements a number of useful lifecycle hooks and methods.
+Smart components are typically based on the the React Component class, which implements a number of useful lifecycle hooks and methods.
 
 The render method is run every time a passed `prop` or internal `state` is changed.
 
-A re-render will not be triggered upon mutation — React does not use two-way databinding.
-
 ```jsx
 class Counter extends React.Component {
-  state = { count: 0 }
-  // methods that alter state without mutation — triggering a component re-render
+  state = { count: 0 } // initial component state
+
+  // methods that alter state without mutation triggering a component re-render
   increment = () => this.setState({ count: this.state.count + 1 })
   decrement = () => this.setState({ count: this.state.count - 1 })
 
-  render() {
+  render() { // must implement render method that returns JSX
     return (
       <div className="counter">
         {this.state.count}
@@ -160,6 +151,8 @@ class Counter extends React.Component {
     )
   }
 }
+
+ReactDOM.render(<Counter />, document.getElementById("root"))
 ```
 ---
 # [🚦 Asynchronicity](/subjects/02-components/async.html)
@@ -172,8 +165,7 @@ This allows React to potentially fetch the data before it tries to render the co
 class Book extends React.Component {
   state = { data: null }
 
-  // will be called before first render
-  componentWillMount() {
+  componentWillMount() { // will be called before first render
     const { isbn } = this.props
     fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn)
       .then(response => response.json())
@@ -186,24 +178,24 @@ class Book extends React.Component {
     return <img className="book" src={book.volumeInfo.imageLinks.thumbnail} />
   }
 }
+
+ReactDOM.render(<Book isbn="0345816021" />, document.getElementById("root"))
 ```
 ---
 # [Repeaters?](/subjects/02-components/lists.html)
 
-Since everything in react is basically an object tree (VDOM), the way to do repition, like a list view, is just to use JavaScript's built-in array methods like `map` and `reduce` and return React Elements per iteration.
+The way to do repition, like a list view, is just to use JavaScript's built-in array methods like `map` and `reduce` and return a React Element per iteration — generating a new array to be used as `children`.
 
-One important thing to note is that it is recommended to attach a key property to each repeated instance. This helps React's diff calculation know what has changed between render calls — optimizing performance.
+One important thing to note is that it is recommended to attach a key property to each repeated instance containing a unique value (preferrably an ID). This helps React's diff calculation know what has changed between render calls — optimizing performance.
 
 ```jsx
-const rootElement = document.getElementById("root")
 const items = ["🙈", "🙉", "🙊"]
 
-// returns a list item for each passed item on the props.items property
 const List = props => (
   <ul>
-    {props.items.map((item, index) => <li key={index}>{item}</li>)}
+    {props.items.map((item, index) => <li key={item}>{item}</li>)}
   </ul>
 )
 
-ReactDOM.render(<List items={items}/>, rootElement)
+ReactDOM.render(<List items={items}/>, document.getElementById("root"))
 ```

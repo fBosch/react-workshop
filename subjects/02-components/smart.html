@@ -17,8 +17,6 @@
   <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   <script type="text/babel">
-      const rootElement = document.getElementById("root")
-
       class Counter extends React.Component {
         state = { count: 0 } // initial component state
 
@@ -37,13 +35,7 @@
         }
       }
 
-      const element = (
-        <div className="app">
-          <Counter />
-        </div>
-      )
-
-      ReactDOM.render(element, rootElement)
+      ReactDOM.render(<Counter />, document.getElementById("root"))
   </script>
 </body>
 </html>
