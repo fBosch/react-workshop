@@ -1,6 +1,6 @@
-class: center, middle, dark-background
-background-image: url(https://alisd.io/assets/lazy_react_background.png)
+class: center, middle
 
+#⚛️
 # React Workshop
 ``` bash
 git clone https://github.com/fBosch/react-workshop.git
@@ -12,11 +12,12 @@ git clone https://github.com/fBosch/react-workshop.git
 1. Rendering API
 2. JSX
 3. Components
-  * Dumb Components
-  * Smart Components
-  * Asynchronicity
-  * Repetition
-  * Event Handling
+4. Dumb Components
+5. Smart Components
+6. Repetition
+7. Event Handling
+8. Asynchronicity
+9. PropTypes
 
 ---
 
@@ -100,17 +101,17 @@ With React all you need to know is how to make and compose components, there are
 There is two ways to write a React component:
 ___
 
-🤖 Dumb Components
+Dumb Components 🤖
 
 — are simple functions that take input (`props`) and returns JSX. They are stateless, primarily presentational and are often used as small UI parts that are composed together in smart components.
 ___
-🧠 Smart Components
+Smart Components 🧠
 
 — are, typically, class based functions that contain application state and can trigger re-render upon state change. These are commonly where you would make fetch requests and other logic that is not view specific.
 
 ---
 
-# [🤖 Dumb Component](/subjects/02-components/dumb.html)
+# [Dumb Component 🤖](/subjects/02-components/greeting.html)
 
 ```jsx
 // Dumb component utilized as function
@@ -131,8 +132,7 @@ ReactDOM.render(element, document.getElementById("root"))
 Using CamelCased naming for your component functions allows the JSX transpiler to know that it is referencing a variable  — otherwise it will try to interpretate it as a `tagName` string.
 
 ---
-
-# [🧠 Smart Component](/subjects/02-components/smart.html)
+# [Smart Component 🧠](/subjects/02-components/counter.html)
 
 Smart components are typically based on the the React Component class, which implements a number of useful lifecycle hooks and methods.
 
@@ -142,7 +142,7 @@ The render method is run every time a passed `prop` or internal `state` is chang
 class Counter extends React.Component {
   state = { count: 0 } // initial component state
 
-  // methods that alter state without mutation triggering a component re-render
+  // methods that update state without mutation triggering a component re-render
   increment = () => this.setState({ count: this.state.count + 1 })
   decrement = () => this.setState({ count: this.state.count - 1 })
 
@@ -160,9 +160,58 @@ class Counter extends React.Component {
 ReactDOM.render(<Counter />, document.getElementById("root"))
 ```
 ---
-# [🚦 Asynchronicity](/subjects/02-components/async.html)
 
-It is recommended to use the component lifecycle hook `componentWillMount` for handling asynchronous logic.
+# [Repetition 🔂](/subjects/02-components/list.html)
+
+The way to do repetition, like a list view, is just to use JavaScript's built-in array methods like `map` and `reduce` and return a React Element per iteration — generating a new array to be used as `children`.
+
+One important thing to note; is that it is recommended to attach a key property to each repeated instance containing a unique value (preferrably an ID). This helps React's diff calculation know what has changed between render calls — optimizing performance.
+
+```jsx
+const items = ["🙈", "🙉", "🙊"]
+
+const List = props => (
+  <ul>
+    {props.items.map((item, index) => <li key={index}>{item}</li>)}
+  </ul>
+)
+
+ReactDOM.render(<List items={items} />, document.getElementById("root"))
+```
+
+---
+
+# [Event Handling 📡](/subjects/02-components/form.html)
+
+```jsx
+class Form extends React.Component {
+  state = { firstName: "", lastName: "", fullName: null }
+
+  onInputChange = e => this.setState({ [e.target.name]: e.target.value })
+  onSubmit = e => {
+    e.preventDefault()
+    this.setState({ fullName: this.state.firstName + " " + this.state.lastName })
+  }
+
+  render() {
+    return (
+      <form className="form" onSubmit={this.onSubmit}>
+        <label>First Name</label>
+        <input type="text" name="firstName" onChange={this.onInputChange} />
+        <label>Last Name</label>
+        <input type="text" name="lastName" onChange={this.onInputChange} />
+        <button>Submit</button>
+        <hr/>
+        Full name: {this.state.fullName ? this.state.fullName : null}
+      </form>
+    )
+  }
+}
+```
+---
+# [Asynchronicity 🚦](/subjects/02-components/book.html)
+
+It is recommended to use the lifecycle hook `componentWillMount` for handling asynchronous logic when the component is initializing.
 
 This allows React to potentially fetch the data before it tries to render the component — minimizing the amount of times the component is re-rendered.
 
@@ -186,51 +235,6 @@ class Book extends React.Component {
 
 ReactDOM.render(<Book isbn="0345816021" />, document.getElementById("root"))
 ```
----
-# [Repetition](/subjects/02-components/lists.html)
-
-The way to do repetition, like a list view, is just to use JavaScript's built-in array methods like `map` and `reduce` and return a React Element per iteration — generating a new array to be used as `children`.
-
-One important thing to note; is that it is recommended to attach a key property to each repeated instance containing a unique value (preferrably an ID). This helps React's diff calculation know what has changed between render calls — optimizing performance.
-
-```jsx
-const items = ["🙈", "🙉", "🙊"]
-
-const List = props => (
-  <ul>
-    {props.items.map((item, index) => <li key={item}>{item}</li>)}
-  </ul>
-)
-
-ReactDOM.render(<List items={items} />, document.getElementById("root"))
-```
 
 ---
-
-# [Event Handling](/subjects/02-components/events.html)
-
-```jsx
-class Form extends React.Component {
-  state = { firstName: "", lastName: "", fullName: null }
-
-  onInputChange = e => this.setState({ [e.target.name]: e.target.value })
-  onSubmit = e => {
-    e.preventDefault()
-    this.setState({ fullName: this.state.firstName + " " + this.state.lastName})
-  }
-
-  render() {
-    return (
-      <form className="form" onSubmit={this.onSubmit}>
-        <label>First Name</label>
-        <input type="text" name="firstName" onChange={this.onInputChange} />
-        <label>Last Name</label>
-        <input type="text" name="lastName" onChange={this.onInputChange} />
-        <button>Submit</button>
-        <hr/>
-        Full name: {this.state.fullName ? this.state.fullName : null}
-      </form>
-    )
-  }
-}
-```
+# [PropTypes](/subjects/03-proptypes/)

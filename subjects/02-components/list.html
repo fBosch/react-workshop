@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Dumb Component</title>
+  <title>List</title>
   <style>
     .container {
       font-size: 80px;
@@ -18,10 +18,15 @@
   <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
   <script type="text/babel">
-    const greeting = props => <div className="container">{props.content}</div>
-    const element = greeting({ content: "Hello from component"})
+      const items = ["🙈", "🙉", "🙊"]
 
-    ReactDOM.render(element, document.getElementById("root"))
+      const List = props => (
+        <ul>
+          {props.items.map((item, index) => <li key={index}>{item}</li>)}
+        </ul>
+      )
+
+      ReactDOM.render(<List items={items} />, document.getElementById("root"))
   </script>
 </body>
 </html>

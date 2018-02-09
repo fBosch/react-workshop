@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Book</title>
+  <style>
+    .book {
+      zoom: 3;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@16.0.0/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@16.0.0/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/prop-types@15.6.0/prop-types.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script type="text/babel">
+
+      class Book extends React.Component {
+        state = { data: null }
+
+        // will be called before first render
+        componentWillMount() {
+          const { isbn } = this.props
+          fetch('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn)
+            .then(response => response.json())
+            .then(data => this.setState({ data }))
+        }
+
+        render() {
+          if (!this.state.data) return "Loading..." // handling when data is not loaded
+          const book = this.state.data.items[0]
+          return <img className="book" src={book.volumeInfo.imageLinks.thumbnail} />
+        }
+      }
+
+      Book.propTypes = {
+        isbn: PropTypes.string.isRequired
+      }
+
+      ReactDOM.render(<Book isbn="0345816021" />,  document.getElementById("root"))
+  </script>
+</body>
+</html>
