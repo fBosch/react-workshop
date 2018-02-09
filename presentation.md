@@ -25,7 +25,7 @@ git clone https://github.com/fBosch/react-workshop.git
 
 With React you build the DOM using JavaScript objects (Virtual DOM) instead of the alternative that most developers are familiar with — templating.
 
-By using the VDOM; React can find the difference of DOM trees (on application state change) before rendering and only re-render the changed nodes, similar to the way merging with GIT works.
+By using the VDOM; React can, on application state change, find the difference of DOM trees before rendering  — and only re-render the changed nodes, similar to the way merging with GIT works.
 
 This allows React to render components much faster than most other competing frameworks
 
@@ -38,7 +38,7 @@ This allows React to render components much faster than most other competing fra
 The React API is worded similarly to the native APIs made for DOM manipulation that already exist on the modern web platforms.
 
 ```js
-// 🍦Vanilla
+// Vanilla 🍦
 const element = document.createElement("div") // tagName
 element.className = "container" // properties
 element.appendChild(document.createTextNode("Hello!")) // children
@@ -48,7 +48,7 @@ document.getElementById("root").appendChild(element) // render
 
 ___
 ```js
-// ⚛️React
+// React ⚛️
 const element = React.createElement("div", { className: "container" }, "Hello!")
                               //   tagName        properties           children
 
@@ -60,9 +60,9 @@ ReactDOM.render(element, document.getElementById("root")) // render
 
 It is possible to write a React application only by using the `React.createElement` API, but it can be hard to maintain — so Facebook has invented an abstraction layer called JSX, which allows us to work with elements in a manner that we're more accustomed to: HTML.
 
-It is not completely like HTML, it still relies on the same data structures as the raw API — for example; differences like the `className` property instead of using `class`.
+It is not completely like HTML, it still relies on the same data structures as the raw API, for example: differences like the `className` property instead of using `class`.
 
-JSX needs to be transpiled to regular JavaScript using a transpiler, like Babel, that will turn the JSX element declarations into `React.createElement` function calls.
+JSX needs to be transpiled to regular JavaScript using a transpiler (Babel) — that will turn the JSX element declarations into `React.createElement` function calls.
 
 Summarized — JSX is **highly** recommended syntactic sugar when building a React application
 
@@ -85,7 +85,7 @@ const element = <div className="container">Hello!</div>
 ___
 
 ```js
-// 🔀Transpiled
+// Transpiled 🔀
 const element = React.createElement("div", { className: "container" }, "Hello!")
 
 ```
